@@ -3,7 +3,6 @@ hostnamectl set-hostname ns01.drivus.com.br
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY*
 yum -y install epel-release
 rm -rf /etc/yum.repos.d/epel.repo
-wget http://67.228.182.82:8080/epel.repo -O /etc/yum.repos.d/epel.repo
 yum -y update
 yum -y install yum-priorities
 yum -y groupinstall 'Development Tools'
