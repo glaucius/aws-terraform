@@ -1,9 +1,23 @@
-# aws-terraform
-laboratório de terraform para aws
+AWS-Terrafom - Infra estrutura como código
 
-Siga os passos abaixo, cruze os dedos e seja feliz.
+Você quer construir sua cloud orientada em código, veio no lugar certo.
 
-Estes scripts estão preparados para realizar o deploy abaixo :
+O aws-terraform é um conjunto de códigos que realizam o deploy de uma infra estrutura na AWS, orientada a subnets públicas e privadas, garantindo comunicação entre as redes (aplicação e banco) e também garantindo a conexão com a internet para as redes privadas.
+
+O que é deployado por código no aws-terraform
+
+    - VPC 
+    - Subnets pública e privada
+    - Internet Gateway
+    - NAT Gateway
+    - Rotas e associações
+    - Security Groups
+    - EC2 - Instância web
+    - EC2 - Instância db
+    
+Ainda temos espaço para incluir novos serviços, fica pra frente.
+
+Bom, para você seguir adiante, siga os passos abaixo e cruze os dedos :
 
 1 - Instalar e configurar o AWS Command Line 
 
@@ -15,7 +29,8 @@ Estes scripts estão preparados para realizar o deploy abaixo :
 
 
 2 - Instalar o Terraform, para mais detalhes use os links abaixo :
-        https://learn.hashicorp.com/terraform/getting-started/install.html
+
+    - https://learn.hashicorp.com/terraform/getting-started/install.html
 
 
 3 - Faça o clone do repositório, aqui você vai precisar do git :
@@ -47,7 +62,6 @@ Estes scripts estão preparados para realizar o deploy abaixo :
     - Duas instâncias : DB01 e WEB01
     - Os servidores web utilizam o arquivo userdataweb.sh para setup de serviço web em tempo de deploy
     - Os servidores db utilizam o arquivo userdatadb.sh para setup de serviço de banco de dados em tempo de deploy
-    - Banco de dados 
 
 7 - Caso queira alterar, incluir ou remover algo, por favor, edite os arquivos .tf
 
