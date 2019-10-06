@@ -15,6 +15,6 @@ variable "PRIVATE_KEY_PATH" {
 }
 
 variable "PUBLIC_KEY_PATH" {
-  default = "oregon-region-key-pair.pub"
+  default = "minha-chave-ssh.pub"
 }
 
