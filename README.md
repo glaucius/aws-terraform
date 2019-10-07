@@ -35,7 +35,7 @@ Bom, para você seguir adiante, siga os passos abaixo e cruze os dedos :
 
 3 - Faça o clone do repositório, aqui você vai precisar do git :
 
-    $ git clone git clone https://github.com/glaucius/aws-terraform.git
+    $ git clone https://github.com/glaucius/aws-terraform.git
 
     * Caso preferir, pode baixar o zip do repositório Git.
 
