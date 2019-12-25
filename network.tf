@@ -1,6 +1,6 @@
 ### Criação de Internet Nat Gateway
 resource "aws_internet_gateway" "prod-igw" {
-  vpc_id = "${aws_vpc.prod-vpc.id}"
+  vpc_id = aws_vpc.prod-vpc.id
 
   tags = {
     Name = "prod-igw"
@@ -9,10 +9,10 @@ resource "aws_internet_gateway" "prod-igw" {
 
 ### Criação de rota customizadas para subnets públicas
 resource "aws_route_table" "prod-public-crt" {
-    vpc_id = "${aws_vpc.prod-vpc.id}"
+    vpc_id = aws_vpc.prod-vpc.id
     route {
         cidr_block = "0.0.0.0/0"
-        gateway_id = "${aws_internet_gateway.prod-igw.id}"
+        gateway_id = aws_internet_gateway.prod-igw.id
     }
 
     tags = {
@@ -22,28 +22,42 @@ resource "aws_route_table" "prod-public-crt" {
 
 ### Associar rota para subnets públicas
 resource "aws_route_table_association" "prod-crta-public-subnet-1" {
-    subnet_id = "${aws_subnet.prod-subnet-public-1.id}"
-    route_table_id = "${aws_route_table.prod-public-crt.id}"
+    subnet_id = aws_subnet.prod-subnet-public-1.id
+    route_table_id = aws_route_table.prod-public-crt.id
+}
+resource "aws_route_table_association" "prod-crta-public-subnet-2" {
+    subnet_id = aws_subnet.prod-subnet-public-2.id
+    route_table_id = aws_route_table.prod-public-crt.id
+}
+resource "aws_route_table_association" "prod-crta-public-subnet-3" {
+    subnet_id = aws_subnet.prod-subnet-public-3.id
+    route_table_id = aws_route_table.prod-public-crt.id
 }
 
 ### Criação de Elastic IP para NAT Gateway
 resource "aws_eip" "nat" {
 vpc      = true
+    tags = {
+        Name = "prod-elastic-ip-crt"
+    }
 }
 
 ### Criação de NAT Gateway
 resource "aws_nat_gateway" "nat-gw" {
-allocation_id = "${aws_eip.nat.id}"
-subnet_id = "${aws_subnet.prod-subnet-public-1.id}"
-depends_on = ["aws_internet_gateway.prod-igw"]
+allocation_id = aws_eip.nat.id
+subnet_id = aws_subnet.prod-subnet-public-1.id
+depends_on = [aws_internet_gateway.prod-igw]
+    tags = {
+        Name = "prod-nat-gateway-crt"
+    }
 }
 
 ### Criação de rotas customizadas para subnets privadas
 resource "aws_route_table" "prod-private-crt" {
-    vpc_id = "${aws_vpc.prod-vpc.id}"
+    vpc_id = aws_vpc.prod-vpc.id
     route {
         cidr_block = "0.0.0.0/0" //associated subnet can reach everywhere
-        nat_gateway_id = "${aws_nat_gateway.nat-gw.id}"
+        nat_gateway_id = aws_nat_gateway.nat-gw.id
     }
 
     tags = {
@@ -51,11 +65,12 @@ resource "aws_route_table" "prod-private-crt" {
     }
 }
 
-### Associar rota para subnets públicas
+### Associar rota para subnets privadas
 resource "aws_route_table_association" "private-1" {
-    subnet_id = "${aws_subnet.prod-subnet-private-1.id}"
-    route_table_id = "${aws_route_table.prod-private-crt.id}"
+    subnet_id = aws_subnet.prod-subnet-private-1.id
+    route_table_id = aws_route_table.prod-private-crt.id
 }
+
 
 ### Security Groups
 
@@ -63,7 +78,7 @@ resource "aws_route_table_association" "private-1" {
 resource "aws_security_group" "webservers" {
   name        = "webservers"
   description = "Allow webservers"
-    vpc_id = "${aws_vpc.prod-vpc.id}"
+    vpc_id = aws_vpc.prod-vpc.id
 
     egress {
         from_port = 0
@@ -113,7 +128,7 @@ resource "aws_security_group" "webservers" {
 resource "aws_security_group" "dbservers" {
   name        = "dbservers"
   description = "Allow dbservers"
-    vpc_id = "${aws_vpc.prod-vpc.id}"
+    vpc_id = aws_vpc.prod-vpc.id
 
     egress {
         from_port = 0
